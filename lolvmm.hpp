@@ -39,7 +39,7 @@ inline const char* uri_to_path(const char* uri) { return lilv_uri_to_path(uri); 
 //So for example 
 // LOLV_WRAP_CO_P_O
 //inside Lolv::World will wrap a function which looks like 
-// const LilvNode* lilv_thingy(LilvWorld* w, int i, LilvNode* n)
+// const LilvNode* lilv_world_thingy(LilvWorld* w, int i, LilvNode* n)
 //into
 // const Node* Lolv::World::thingy(int i, Node* n)
 
