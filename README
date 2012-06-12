@@ -1,0 +1,18 @@
+Lolvmm is a C++ library which wraps the C library Lilv 
+(http://drobilla.net/software/lilv/), a library for hosting LV2 audio 
+processing plugins.  It is designed to have zero overhead, and to be 
+intuitive to a C++ developer.
+
+Lilv has it's own C++ wrapper, Lilvmm.  Lolvmm is an alternative library 
+which eliminates the additional redirection in Lilvmm, and utilizes 
+C++11's auto-pointer functionality to provide easier and more intuitive 
+memory management.
+
+Lolvmm is designed to be machine-transparent, i.e. code using Lolvmm 
+should compile to exactly the same instructions as if one was to call 
+the C functions directly (give or take compiler quirks).  There is a 
+single exception to this, when dealing with Plugin Ports.  When calling 
+functions on an LilvPort, Lilv requires the LilvPlugin it originates 
+from to be passed as an additional argument. Lolvmm wraps a reference to 
+both the LilvPort and the LilvPlugin as a Lolv::PortRef.  Lolvmm 
+operates entirely on PortRefs, and never on Ports Directly.
