@@ -247,12 +247,39 @@ struct Nodes {
 	LOLV_CONST_WRAP_P_CO(bool, nodes, contains, Node, node);
 	LOLV_WRAP_COLL(Nodes, Node, nodes);
 };
-		
+
+struct UI;
+
+struct UIs {
+	LOLV_CONST_WRAP_CO_CO(UI, uis, get_by_uri, Node, uri);
+	LOLV_WRAP_COLL(UIs, UI, uis);
+};		
+
+struct UI {
+	LOLV_DEFINE_WRAP(UI)
+	
+	LOLV_CONST_WRAP_CO(Node, ui, get_uri);
+	LOLV_CONST_WRAP_CO(Nodes, ui, get_classes);
+	LOLV_CONST_WRAP_P_CO(bool, ui, is_a, Node, class_uri);
+
+	inline uint32_t is_supported (LilvUISupportedFunc supported_func, const Node* container_type, const Node **ui_type) {
+		return lilv_ui_is_supported(
+			ConstUnwrap(this),
+			supported_func, 
+			Node::ConstUnwrap(container_type),
+			reinterpret_cast<const LilvNode**>(ui_type)); //TODO: there is a bug in Lilv relating to this constness
+	};
+
+	LOLV_CONST_WRAP_CO(Node, ui, get_bundle_uri);
+	LOLV_CONST_WRAP_CO(Node, ui, get_binary_uri);
+};
+
 struct Port {
 	LOLV_DEFINE_CONST_WRAP(Port);
  private:
 	LOLV_HIDE_CREATION(Port)
 };
+
 struct Plugin;
 
 struct PortRef {
@@ -336,7 +363,7 @@ struct Plugin {
 	}
 
 	LOLV_CONST_WRAP_V_P_P_P(plugin, get_port_ranges_float, float*, min_values, float*, max_values, float*, def_values);
-
+	LOLV_CONST_WRAP_O(UIs, uis, plugin, get_uis);
 
 	inline unsigned get_num_ports_of_class(LilvNode* class_1,
 	                                       LilvNode* class_2) {
